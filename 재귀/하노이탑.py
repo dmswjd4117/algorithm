@@ -1,4 +1,3 @@
-
 N = int(input())
 count = 0
 res = []
