@@ -2,7 +2,6 @@
 
 N, M = map(int, input().split())
 
-
 res = [0] * 10
 def go(index, start):
 
