@@ -45,10 +45,7 @@ ans1 = len(str(close)) + abs(close-N)
 ## 2
 ans2 = abs(N - 100)
 
-
-# print(close,  abs(close-N))
-# print(ans1, ans2)
-
+## 예외처리 !!!!
 if close == MAX:
     print(ans2)
 else:
