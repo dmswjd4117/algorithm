@@ -53,3 +53,53 @@ for _ in range(T):
     for i in vis:
         print(" ".join(map(str, i)))
         print()
+
+import sys
+input = lambda : sys.stdin.readline().rstrip()
+sys.setrecursionlimit(1000000)
+
+# 
+
+f = open("./main.txt", 'r')
+input = lambda : f.readline().rstrip()
+
+test = int(input())
+for _ in range(test):
+    N = int(input())
+    graph = []
+    for i in range(N):
+        graph.append(list(map(int, input().split())))
+    vis = [
+        [0] * N
+        for _ in range(N)
+    ]
+    move = [
+        [0,1],[1,0],[0,-1],[-1,0]
+    ]
+
+    def isin(x, y):
+        return 0 <= x < N and 0 <= y < N and graph[x][y] != 1
+
+    def go(x, y, index):
+        if x == N-1 and y == N-1:
+            return True
+        if not isin(x, y):
+            return False
+        if vis[x][y] != 0:
+            return False
+        
+        tx ,ty = x + move[index][0], y + move[index][1]
+        if isin(tx, ty):
+            return go(tx, ty, index)
+        
+        vis[x][y] = 1
+        for i in range(4):
+            tx, ty = x+move[i][0], y +move[i][1]
+            if go(tx, ty, i):
+                return True
+
+        return False
+
+    print(go(0, 0, 0) or go(0, 0, 1) or go(0, 0, 2) or go(0, 0, 3))
+    # for i in range(N):
+    #     print(vis[i])
