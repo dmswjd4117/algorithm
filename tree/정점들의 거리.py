@@ -1,14 +1,14 @@
 from math import floor, log2
 import sys
- 
-
-input = lambda : sys.stdin.readline().rstrip()
 sys.setrecursionlimit(100000)
 
-
+input = lambda : sys.stdin.readline().rstrip()
+ 
 INF = float('inf')
 MAX_NODE = 50_002
 MAX_LEVEL = floor(log2(MAX_NODE))
+
+ 
 
 N = int(input())
 
@@ -23,11 +23,11 @@ graph = [
     [] for _ in range(N+1)
 ]
 arr = []
-
+dis = [0] * (N+1)
 for i in range(N-1):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    a, b, v = map(int, input().split())
+    graph[a].append((b, v))
+    graph[b].append((a, v))
 
 M = int(input())
 
@@ -36,10 +36,11 @@ for i in range(M):
     arr.append((a, b))
     
 
-def set_tree(here, parent):
+def set_tree(here, parent, value):
 
     depth[here] = depth[parent] + 1
     ps[here][0] = parent
+    dis[here] = dis[parent] + value
 
     for i in range(1, MAX_LEVEL+1):
         temp = ps[here][i-1]
@@ -47,36 +48,38 @@ def set_tree(here, parent):
 
 
 
-    for next_node in graph[here]:
+    for next_node , value in graph[here]:
         if next_node != parent:
-            set_tree(next_node, here)
+            set_tree(next_node, here, value)
 
 
 depth[0] = -1
-set_tree(1, 0)
+dis[0] = 0
+set_tree(1, 0, 0)
 
  
 for a, b in arr:
+    cur = [a, b]
     if(depth[a] != depth[b]):
         if depth[a] > depth[b]:
             a, b = b, a
         
-        # b의 2^i 번째 조상 깊이와 a 깊이 비교 
         for i in range(MAX_LEVEL, -1, -1):
-
-            #b의 2^i 번째 조상이 a 깊이보다 깊거나 같으면
-            #b의 2^i 번째 조상의 2^(i-1)번째~ 1번째 조상과 비교를 계속한다.
             if depth[a] <= depth[ps[b][i]]:
                 b = ps[b][i] 
 
-    answer = a
+    lca = a
     if a != b:
-        # 2^i 번째 조상이 서로 달라지면 a, b 교체
         for i in range(MAX_LEVEL, -1, -1):
             if ps[a][i] != ps[b][i]:
                 a = ps[a][i]
                 b = ps[b][i]
-            answer = ps[a][i]
+            lca = ps[a][i]
+    
+    a, b = cur
+    answer = dis[a] + dis[b] - dis[lca] * 2
     print(answer)
+        
+
 
  
