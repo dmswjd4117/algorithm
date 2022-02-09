@@ -81,8 +81,7 @@ void printList(List list) {
 }
 
 void upCur(List* plist, int n) {
-    //printf("up : %d\n", n);
-
+ 
     for (int i = 0; i < n; i++) {
         plist->cur = plist->cur->pre;
     }
@@ -90,8 +89,7 @@ void upCur(List* plist, int n) {
 }
 
 void downCur(List* plist, int n) {
-    //printf("down : %d\n", n);
-
+ 
 
     for (int i = 0; i < n; i++) {
         plist->cur = plist->cur->next;
@@ -102,8 +100,7 @@ void downCur(List* plist, int n) {
 }
 
 void remove(List* plist) {
-    //printf("remove : %d\n", plist->cur->number);
-
+ 
     if (plist->cur == NULL) {
         printf("remove error");
         exit(0);
